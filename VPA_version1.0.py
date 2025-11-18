@@ -1,38 +1,35 @@
 import speech_recognition as sr
-import pyttsx3, pywhatkit, wikipedia, pyautogui, threading
-engine = pyttsx3.init()
-engine.say("Hello, how can I assist you?")
-pyautogui.alert("Voice Assistant Activated")
-listener = sr.Recognizer()
+import pyttsx3, pywhatkit, wikipedia, pyautogui, threading, datetime
 
 def talk1(text):
-    #engine = pyttsx3.init()
+    engine = pyttsx3.init()
     voices = engine.getProperty('voices')
     engine.setProperty('voice', voices[1].id)
-    engine.setProperty('rate', 150)  # Speed of speech (default 200)
+    engine.setProperty('rate', 140)  # Speed of speech (default 200)
     engine.setProperty('volume', 0.9)  # Volume (0.0 to 1.0)
     engine.say(text)
-    #engine.runAndWait()
+    engine.runAndWait()
 
 def talk2(text):
-    #engine = pyttsx3.init()
+    engine = pyttsx3.init()
     voices = engine.getProperty('voices')
     engine.setProperty('voice', voices[0].id)
     engine.say(text)
-    #engine.runAndWait()
+    engine.runAndWait()
 
 
 def take_command():
     try:
+        listener = sr.Recognizer()
         with sr.Microphone() as source:
             print("Listening...")
             voice = listener.listen(source)
             command = listener.recognize_google(voice).lower()
+            print(f"Recognized command: {command}")
             if 'alexa' in command:
                 command = command.replace('alexa', '').strip()
-                print(f"Recognized command: {command}")
-                talk2(f"You said: {command}")
-            return command
+                #talk2(f"You said: {command}")
+                return command
     except Exception as e:
         print(f"Error {e}")
         return ''
@@ -40,8 +37,8 @@ def take_command():
 def show_alert(text,title="Info"):
     pyautogui.alert(text,title=title)
 
-def run_alexa():
-    command = 'wiki Einstein' #take_command()
+def run_alexa(command):
+    command = command #take_command()
     '''command = 'play Tailor swift' #take_command()
     command="time?"
     command = 'wiki python'
@@ -55,7 +52,6 @@ def run_alexa():
         print(f"Playing {command} on YouTube")
         pywhatkit.playonyt(command)
     elif 'time' in command:
-        import datetime
         time = datetime.datetime.now().strftime('%I:%M %p')
         talk1("The current time is " + time)
         print("The current time is " + time)
@@ -73,6 +69,7 @@ def run_alexa():
             threading.Thread(target=talk2,args=(info,)).start()
             threading.Thread(target=print,args=(info,)).start()
             threading.Thread(target=show_alert,args=(info,"Wikipedia Info")).start()
+            talk1("I wish you liked it!")
             #print(info)
             #pyautogui.alert(info,title=("Wikipedia Info"))
         except:
@@ -84,6 +81,7 @@ def run_alexa():
             threading.Thread(target=talk1,args=(info,)).start()
             threading.Thread(target=print,args=(info,)).start()
             threading.Thread(target=show_alert,args=(info,f'Who the heck is {command}')).start()
+            talk2("That's all")
             #talk1(info)
             #print(info)
         except:
@@ -94,21 +92,22 @@ def run_alexa():
         threading.Thread(target=talk1,args=(joke,)).start()
         threading.Thread(target=show_alert,args=(joke,'Python Jokes')).start()
         threading.Thread(target=print,args=(joke,)).start()
-        talk1(joke)
-        pyautogui.alert(joke,title=("joke"))
-        print(joke)
+        #talk1(joke)
+        #pyautogui.alert(joke,title=("joke"))
+        #print(joke)
     else:
-        talk2("Please say the command again.")
+        talk1("Please say the command again.")
         print("Please say the command again.")    
     #talk1("Wow, that was amazing!")
 
 def main():
     while True:
-        command = ' hygf'#take_command()
+        command = take_command()
         if command:
-            run_alexa()
-            engine.runAndWait()
+            run_alexa(command)
+            #engine.runAndWait()
 
+    
 def sleep_alexa():
     import time
     time.sleep(200)
@@ -116,6 +115,17 @@ def sleep_alexa():
     sys.exit()
 
 if __name__=='__main__':
-    threading.Thread(target=main(),args=()).start()
-    threading.Thread(target=sleep_alexa,args=()).start()
-    talk1("Wow, that was amazing!")
+    instructions = (
+    "Voice Assistant Activated\n\n"
+    "Music → plays YouTube\n"
+    "Time/Date → tells current time/date\n"
+    "Wiki/Who the heck is → fetches info from Wikipedia\n"
+    "Joke → tells a programming joke\n"
+    "Else → asks you to repeat"
+    )
+    threading.Thread(target=talk2,args=("Hello I'm Alexa! How can I help you",)).start()
+    threading.Thread(target=show_alert,args=(instructions,"Manual for using VPA")).start()
+    #main()
+    threading.Thread(target=main,args=()).start()
+    #threading.Thread(target=sleep_alexa,args=()).start()
+    #talk1("Wow, that was amazing!")
