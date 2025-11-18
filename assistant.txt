@@ -1,5 +1,7 @@
 1. use wiki 
-2. use gemini
+2. play jokes
 3. download song from yt
 4. play song
-5. 
+5. play news (audio, video)
+6. show real time data of different company stocks, weather etc.
+etc.etc.
