@@ -1,35 +1,41 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Wed Oct 29 23:35:58 2025
+from turtle import *
+Screen()
+setup(600,600,10,70)
+bgcolor("lightblue")
+tracer(False)
+hideturtle()
+pensize(5)
+color("red")
 
-@author: HP
-"""
-
-import requests, bs4, os, webbrowser
-
-
-url = "https://www.npr.org/podcasts/500005/npr-news-now/"
-response = requests.get(url)
-
-soup = bs4.BeautifulSoup(response.text,'html.parser')
-print(soup)
-
-#a class="audio-module-listen
-atag = soup.find_all('a',class_='audio-module-listen')
-for a in atag:
-    b = a['href']
-    print(b)
-    '''
-    #webbrowser.open(b)
-    b = os.path.join(os.getcwd(),b)
+for i in (-100,100):
+    up()
+    goto(-100,-300)
+    down()
+    goto(-100,300)
+    up()
+    goto(100,-300)
+    down()
+    goto(100,300)
+    up()
+    goto(-300,-100)
+    down()
+    goto(300,-100)
+    up()
+    goto(-300,100)
+    down()
+    goto(300,100)
+    up()
+# create a dictionary to hold the positions
+cell = {'1':(-200,-200),'2':(0,-200),'3':(200,-200),'4':(-200,0),'5':(0,0),'6':(200,0),
+        '7':(-200,200),'8':(0,200),'9':(200,200)}        
+# Go to the center of each cell
+for c, center in list(cell.items()):
+    goto(center)
+    dot(90,"blue")
+    write(c,align='center',font=('Arial',20,'italic'))
     
-    os.system(f"curl -O {b}")
-    #from playsound import playsound
-    #playsound(f"{b}")
-    os.system(f"explorer {b}")'''
-    
-    #remove unwanted components
-    pos = b.find('?')
-    print(b[0:pos])
-    mymp3 = b[0:pos]
-    webbrowser.open(mymp3)
+done()
+try:
+    bye()
+except:
+    pass

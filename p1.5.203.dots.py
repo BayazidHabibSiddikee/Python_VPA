@@ -1,0 +1,20 @@
+import turtle as a 
+a.Screen()
+a.setup(600,500,100,200)
+a.bgcolor('light green')
+a.title('turtle graphics by python -_-')
+a.up()
+a.goto(150,100)
+a.dot(120,'red')
+a.goto(-150,100)
+a.dot(15,'yellow')
+a.goto(150,-100)
+a.dot(125,'blue')
+a.goto(-150,-100)
+a.dot(10,'green')
+a.hideturtle()
+a.done()
+try:
+    a.bye()
+except a.Terminator:
+    print('exit turtle')
